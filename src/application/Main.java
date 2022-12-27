@@ -1,6 +1,7 @@
 package application;
 
 import db.DB;
+import db.DbException;
 import db.DbIntegrityException;
 
 import java.io.IOException;
@@ -13,24 +14,33 @@ public class Main {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         Connection connection = null;
-        PreparedStatement st = null;
+        Statement st = null;
         try {
             connection = DB.getConnection();
-            st = connection.prepareStatement("DELETE FROM department " +
-                    "WHERE " +
-                    "Id = ?");
 
-            st.setInt(1, 2);
-            int result = st.executeUpdate();
-            if (result > 0) {
-                System.out.println("Done. Rows Affect: " + result);
-            }
-            else {
-                System.out.println("Error");
-            }
+            connection.setAutoCommit(false);
+
+            st = connection.createStatement();
+            int rows1 = st.executeUpdate("UPDATE seller SET BaseSalary = 2090.00 " +
+                            "WHERE DepartmentId = 1");
+            int rows2 = st.executeUpdate("UPDATE seller SET BaseSalary = 3090.00 " +
+                    "WHERE DepartmentId = 3");
+
+            connection.commit();
+            System.out.println("Rows1: "+rows1);
+            System.out.println("Rows2: "+rows2);
+
         }
         catch (SQLException e) {
-            throw new DbIntegrityException(e.getMessage());
+            try {
+                connection.rollback();
+                throw new DbException("Transaction rolled back! Error caused by: " + e.getMessage());
+            }
+            catch (SQLException e2) {
+                throw new DbException("Error trying to rollback! Error caused by: " + e2.getMessage());
+
+            }
+
         }
         finally {
 
