@@ -15,18 +15,16 @@ public class Main {
         PreparedStatement st = null;
         try {
             connection = DB.getConnection();
-            st = connection.prepareStatement("INSERT INTO seller" +
-                    "(Name,Email,BirthDate,BaseSalary,DepartmentId)" +
-                    "VALUES (?,?,?,?,?)");
-            st.setString(1, "José Junior");
-            st.setString(2, "jose@gmail.com");
-            st.setDate(3, new java.sql.Date(sdf.parse("25/12/2000").getTime()));
-            st.setDouble(4, 3000.00);
-            st.setInt(5, 1);
+            st = connection.prepareStatement("UPDATE seller " +
+                    "SET BaseSalary = BaseSalary + ? " +
+                    "WHERE " +
+                    "(DepartmentId = ?)");
 
+            st.setDouble(1, 200.00);
+            st.setInt(2, 2);
             int result = st.executeUpdate();
             if (result > 0) {
-                System.out.println("Done");
+                System.out.println("Done. Rows Affect: " + result);
             }
             else {
                 System.out.println("Error");
@@ -35,9 +33,7 @@ public class Main {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        catch (ParseException e) {
-            e.printStackTrace();
-        } finally {
+        finally {
 
             DB.closeStatement(st);
             DB.closeConnection();
