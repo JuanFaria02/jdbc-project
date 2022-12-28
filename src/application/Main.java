@@ -11,6 +11,7 @@ import model.entities.Seller;
 import java.io.IOException;
 import java.sql.*;
 
+import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -40,5 +41,11 @@ public class Main {
                 list2) {
             System.out.println(s);
         }
+
+        System.out.println("===================================");
+        System.out.println("TEST 4 insertSeller: ");
+        Seller seller1 = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
+        sellerDao.insert(seller1);
+        System.out.println("Inserted: " + seller1.getId());
     }
 }
