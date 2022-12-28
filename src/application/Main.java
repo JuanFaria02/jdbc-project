@@ -4,7 +4,9 @@ import db.DB;
 import db.DbException;
 import db.DbIntegrityException;
 import model.dao.DaoFactory;
+import model.dao.DepartmentDao;
 import model.dao.SellerDao;
+import model.dao.impl.DepartmentDaoJDBC;
 import model.entities.Department;
 import model.entities.Seller;
 
@@ -55,9 +57,46 @@ public class Main {
         sellerDao.update(seller);
         System.out.println("Update Completed");
 
-        System.out.println("===================================");
+/*        System.out.println("===================================");
         System.out.println("TEST 6 deleteSeller: ");
-        sellerDao.deleteById(6);
-        System.out.println("Delete Completed");
+        sellerDao.deleteById(3);
+
+ */
+
+        System.out.println("===================================");
+
+        System.out.println("Department Class TEST");
+
+        System.out.println();
+
+        System.out.println("TEST 1 findById:");
+        DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+        Department dep = departmentDao.findById(2);
+        System.out.println(dep);
+
+        System.out.println("===================================");
+        System.out.println("TEST 2 findAll:");
+
+        List<Department> allDepartment = departmentDao.findAll();
+        allDepartment.forEach(System.out::println);
+
+        System.out.println("===================================");
+        System.out.println("TEST 3 insert:");
+        Department department1 = new Department(null, "Food");
+        departmentDao.insert(department1);
+        System.out.println("Department inserted id: " + department1.getId());
+
+        System.out.println("===================================");
+        System.out.println("TEST 4 update:");
+        department = departmentDao.findById(3);
+        department.setName("Games");
+        departmentDao.update(department);
+        System.out.println("Department updated");
+
+        System.out.println("===================================");
+        System.out.println("TEST 5 delete:");
+
+        departmentDao.deleteById(9);
+        System.out.println("Deleted");
     }
 }

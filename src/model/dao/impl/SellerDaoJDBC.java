@@ -39,12 +39,13 @@ public class SellerDaoJDBC implements SellerDao {
                 ResultSet rs = st.getGeneratedKeys();
                 if (rs.next()) {
                     seller.setId(rs.getInt(1));
+
                 }
                 DB.closeResultSet(rs);
                 System.out.println("Done");
             }
             else {
-                throw new DbException("Error. Insert not concluded");
+                throw new DbException("Error. Insert didn't conclude");
             }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -90,11 +91,13 @@ public class SellerDaoJDBC implements SellerDao {
         PreparedStatement st = null;
 
         try{
-            st = connection.prepareStatement("DELETE FROM seller\n" +
-                    "WHERE Id = ?");
+            st = connection.prepareStatement("DELETE FROM seller\n" + "WHERE Id = ?");
 
             st.setInt(1, id);
-            st.executeUpdate();
+            int result = st.executeUpdate();
+            if (!testExecuteQuery(result)){
+                throw new DbException("Id doesn't exist");
+            }
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
