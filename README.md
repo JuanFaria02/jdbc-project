@@ -29,3 +29,17 @@ Para uma transação ocorrer ela não pode ser feita pela metade, por exemplo, a
 * setAutoCommit: É passado como parâmentro o valor false e então a operação não é feita até que toda transação seja feita.
 * commit: O commit é como se "mudasse" o valor do parâmetro para true pois assim que o commit é feito a transação ocorre no banco de dados 
 * rollback: Restaura o banco de dados se houver algum erro. 
+
+
+----------
+## Data Access Object (DAO) 
+
+Após entender mais sobre as conexões e os métodos principais da API do JDBC então é hora de entender sobre o padão de acesso a dados chamado DAO.
+
+O DAO é um padrão de projetos em que o objeto provê uma interface que realiza uma abstração do acesso a dados, lê e grava a partir de uma origem de dados além de encapsular o acesso de forma em que as demais classes não "sabem" sobre esse acesso. Esse padrão surge a partir do momento em que se precisa separar a lógica de negócios com a lógica de acesso a dados, as Classes DAO ficam encarregadas de trocar informações com o SGBD e fornecer as operações CRUD e pesquisas, elas precisam ser capazes de buscar dados no banco e transformar os dados em objetos ou lista de objetos.
+
+#### Arquitetura 
+Em uma aplicação web seguindo o modelo MVC, as classes DAO ficam junto com o Model realizando o suporte, integrando a fonte de dados ao modelo de objetos do sistema.
+#### Responsabilidade
+
+O DAO deve seguir o princípio de responsabilidade única e ser responsável apenas pelo acesso a dados. Portanto, cada método do DAO deve fazer uma única leitura ou gravação no banco de dados e não deve controlar transações ou realizar operações adicionais, como por exemplo realizar alterações nos dados recebidos da camada de serviço.  
